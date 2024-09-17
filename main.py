@@ -1,5 +1,9 @@
 import random
 
+#El jugador ingresa su nombre
+
+player_name = input('¡Hola! ¿Cuál es tu nombre?')
+
 # Genera un número aleatorio entre 1 y 100
 random_number = random.randint(1, 100)
 player = None
@@ -9,27 +13,37 @@ print("Ambos deben adivinar el número correcto. ¡Mucha suerte!")
 
 while True:
     # Turno del jugador
-    print('\n--- Round: Player ---')
-    player = int(input('Escribe tu adivinanza (un número entre 1 y 100): '))
+    print('\n--- Round:' + player_name + ' ---')
+    player_choice = int(input('Escribe tu adivinanza (un número entre 1 y 100): '))
     
     # Verifica la adivinanza del jugador
-    if player < random_number:
-        print('Demasiado bajo. ¡Intpentalo de nuevo!')
-    elif player > random_number:
-        print('Demasiado alto. ¡Intpentalo de nuevo!')
+    if player_choice < random_number:
+        print('Demasiado bajo. ¡Inténtalo de nuevo!')
+    elif player_choice > random_number:
+        print('Demasiado alto. ¡Inténtalo de nuevo!')
     else:
         print('¡Felicidades! Has adivinado el número.')
         break
 
     # Turno de la computadora
+    print('\n--- Round: Computer ---')
+
+    #La computadora hace una elección basándose en la respuesta del jugador
+    if player_choice < random_number:
+        #La respuesta del jugador es bajo, la computadora adivina un número mayor
+        computer_choice = random.randint( player_choice + 1, 100)
+    elif player_choice > random_number:
+        #La respuesta del jugador es alto, la computadora adivina un número menor
+        computer_choice = random.randint(1, player_choice - 1)
+
     computer_choice = random.randint(1, 100)
     print(f'La computadora elige: {computer_choice}')
 
     # Verifica la adivinanza de la computadora
     if computer_choice < random_number:
-        print('Demasiado bajo. ¡Intpentalo de nuevo!')
+        print('Demasiado bajo. ¡Inténtalo de nuevo!')
     elif computer_choice > random_number:
-        print('Demasiado alto. ¡Intpentalo de nuevo!')
+        print('Demasiado alto. ¡Inténtalo de nuevo!')
     else:
         print('¡La computadora ha adivinado el número!')
         break
