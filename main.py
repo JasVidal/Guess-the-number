@@ -1,27 +1,34 @@
-import random
+from funcion_juego import welcome
+from player import playerName, playerChoice
+from computer import computerChoice
 
-#El jugador ingresa su nombre
+# Función Bienvenida
+welcome()
 
-player_name = input('¡Hola! ¿Cuál es tu nombre?')
+# Jugador ingresa su nombre
+playerName()
 
-# Genera un número aleatorio entre 1 y 100
-random_number = random.randint(1, 100)
-tentativas = []
-player = None
-intento = None
+# Empieza el juego
 
-print("¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora.")
-print("Ambos deben adivinar el número correcto. ¡Mucha suerte!")
 
-while True:
+# Jugador ingresa su respuesta
+playerChoice()
+
+
+# Computador ingresa su respuesta
+computerChoice()
+
+#-------------------------------------------
+""" while True:
     # Turno del jugador
-    print('\n--- Round:' + player_name + ' ---')
+    print(f'\n--- Round: {player_name}  ---')
     player_choice = int(input('Escribe tu respuesta (un número entre 1 y 100): '))
     
     #Añadir el intento a la lista de tentativas
     tentativas.append(player_choice)
 
     # Verifica la adivinanza del jugador
+
     if player_choice < random_number:
         print('Demasiado bajo. ¡Inténtalo de nuevo!')
     elif player_choice > random_number:
@@ -35,8 +42,8 @@ while True:
 
         #Mostrar intentos (tentativas) realizadas
         print('Tus intentos fueron:')
-        for t in tentativas:
-            print(t)
+        for intento in tentativas:
+            print(intento)
         
         break
 
@@ -62,7 +69,7 @@ while True:
     else:
         print('¡La computadora ha adivinado el número!')
         break
-
+ """
     
 
 
