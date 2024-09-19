@@ -8,51 +8,38 @@ def welcome():
 
 
 # Genera un número aleatorio entre 1 y 100
-def number_generated():
-    random.randint(1, 100)
-    return number_generated
+def generate_number():
+    random_number = random.randint(1, 100)
+    return random_number
 
 # Bucle del juego
 
-def guess_number():
+def guess_number(human_name):
 
-    
-
+    number_to_guess = generate_number()
+    print(number_to_guess)
     turn = "Player"
-    # Genera una lista para intentos
-    tryList = []
-    tryNumber = None
 
     while True:
         #Obtiene número del jugador o cumputadora
         if turn == "Player":
-            number = player_turn()
+            number = player_turn(human_name)
 
         else:
             number = computer_turn()
             
         if number is None:
             continue #Vuelve a intentar
+        
+        new_message = validate_guess(number, number_to_guess)
 
-        # Agrega el intento a la lista
-        tryList.append(number)
+        print(new_message)
+        #Mensaje de fin del juego
 
-        if number < number_generated:
-            print('Demasiado bajo. ¡Inténtalo de nuevo!')
-        elif number > number_generated:
-            print('Demasiado alto. ¡Inténtalo de nuevo!')
-        else:
-            print('¡Felicidades! Has adivinado el número.')
-
-            #Mensaje de fin del juego
+        if new_message == '¡Felicidades! Has adivinado el número.':
             print('\n --- Fin del juego ---')
-            print(f'¡Ganaste en {len(tryList)} intentos!')
+            return turn
 
-            #Mostrar lista de intentos realizadas
-            print('Tus intentos fueron:')
-            for tryNumber in tryList:
-                print(tryNumber)
-            break
 
         if turn == 'Player':
             turn = 'Computer'
@@ -60,16 +47,46 @@ def guess_number():
         else:
             turn = 'Player'
 
+#Función validate guess
+def validate_guess(number, number_to_guess):
+    
+    if number < number_to_guess:
+        message = ('Demasiado bajo. ¡Inténtalo de nuevo!')
+    elif number > number_to_guess:
+        message = ('Demasiado alto. ¡Inténtalo de nuevo!')
+    else:
+        message = ('¡Felicidades! Has adivinado el número.')
+
+    return message
+
+    
+
+# Genera una lista para intentos
+
+def tries_list():
+    try_list = []
+    try_number = None
+    print(f'¡Ganaste en {len(try_list)} intentos!')
+
+
+    # Agrega el intento a la lista
+    try_list.append(try_number)
+    
+    #Mostrar lista de intentos realizadas
+    print('Tus intentos fueron:')
+    for try_number in try_list:
+        print(try_number)
+
 # Jugador ingresa su nombre
 def player_name():    
     name = input('¡Hola! ¿Cuál es tu nombre?')
     return name
 
 # Jugador ingresa su respuesta
-def player_turn():
+def player_turn(human_name):
         
     # Turno del jugador
-        print('\n--- Round: Jugador ---')
+        print(f'\n--- Round: {human_name} ---')
         try:
             return int(input('Escribe tu respuesta (un número entre 1 y 100): '))
         except ValueError:
@@ -80,17 +97,18 @@ def player_turn():
 # Computador ingresa su respuesta
 def computer_turn():
     print('\n--- Round: Computer  ---')
-    computer_choice = random.randint(1, 100)
+    computer_choice = generate_number()
     print(f'La computadora elige:, {computer_choice}')
     return computer_choice
 
 # Empieza el juego
 def start_game():
     welcome()
-    name = player_name()
+    human_name = player_name()
+
 
     # Turno de computadora
-    guess_number()
+    guess_number(human_name, )
 
     #-------------------------------------------
 """ while True:
@@ -146,7 +164,7 @@ def start_game():
     """
 
 if __name__ == '__main__':
-    start_game() 
+    start_game()
 
 
 

@@ -1,4 +1,4 @@
-from main import welcome, guess_number, player_name, player_turn, computer_turn
+from src.main import welcome, guess_number, player_name, player_turn, computer_turn
 import unittest
 
 class TestGuessNumber(unittest.TestCase):
