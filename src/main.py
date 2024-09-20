@@ -17,8 +17,7 @@ def set_player_name():
 #---- Función: Generar número aleatorio ----
 
 def generate_number():
-    random_number = random.randint(1, 100)
-    return random_number
+    return random.randint(1, 100)
 
 
 #---- Función: Turno Jugador ingresa su respuesta ----
@@ -46,27 +45,32 @@ def guess_number(player_name):
     number_to_guess = generate_number()
 
     turn = "Player"
+    player_tries = []
+    computer_tries = []
 
     while True:
        
         if turn == "Player":
             player_guess = player_turn(player_name)
+            # Agrega el intento a la lista
+            player_tries.append(player_guess)
 
         else:
             player_guess = computer_turn()
+            # Agrega el intento a la lista
+            computer_tries.append(player_guess)
             
         if player_guess is None:
             continue #Vuelve a intentar
         
-        new_message = validate_guess(player_guess, number_to_guess)
+        result = validate_guess(player_guess, number_to_guess)
 
-        print(new_message)
+        print(result)
+
         # Mensaje de fin del juego
-
-        if new_message == '¡Felicidades! Has adivinado el número.':
-            print('\n --- Fin del juego ---')
+        if result == '¡Felicidades! Has adivinado el número.':
+            tries_list(turn, player_tries, computer_tries)
             return turn
-
 
         if turn == 'Player':
             turn = 'Computer'
@@ -77,33 +81,31 @@ def guess_number(player_name):
 #---- Función Comparación ----
 
 def validate_guess(player_guess, number_to_guess):
-    
+
     if player_guess < number_to_guess:
         result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
     elif player_guess > number_to_guess:
         result = ('Demasiado alto. ¡Inténtalo de nuevo!')
     else:
         result = ('¡Felicidades! Has adivinado el número.')
-
     return result
     
 
 #---- Genera una lista para intentos ----
 
-def tries_list():
-    try_list = []
-    try_number = None
-    print(f'¡Ganaste en {len(try_list)} intentos!')
+def tries_list(winner, player_tries, computer_tries):
+    if winner == "Player":
+        print(f'¡Ganaste en {len(player_tries)} intentos!')
+        #Mostrar lista de intentos realizadas
+        print('Tus intentos fueron:')
+        for try_number in player_tries:
+            print(try_number)
 
-
-    # Agrega el intento a la lista
-    try_list.append(try_number)
-    
-    #Mostrar lista de intentos realizadas
-    print('Tus intentos fueron:')
-    for try_number in try_list:
-        print(try_number)
-
+    else:
+        print(f'¡La computadora ganó en {len(computer_tries)} intentos!')
+        print('Los intentos de la computadora fueron:')
+        for try_number in computer_tries:
+            print(try_number)
 
 #---- Empieza el juego ----
 
@@ -120,68 +122,16 @@ def start_game():
 #---- Función Volver a jugar ----
 
 def play_again():
-    restart_game = input ('\n ¿Deseas jugar otra vez? Responde: Sí/No')
+    restart_game = input ('\n ¿Deseas jugar otra vez? Responde: Sí/No - ')
 
     if restart_game.lower() == 'sí' or restart_game.lower() == 'si':
-        print('¡Genial! ¡Volvamos a jugar!')
+        print('¡Genial! ¡Volvamos a jugar!\n')
         start_game()
 
     else: 
         print('Gracias por jugar. ¡Hasta la próxima!')
 
-    #-------------------------------------------
-""" while True:
-        # Turno del jugador
-        print(f'\n--- Round: {set_player_name}  ---')
-        player_choice = int(input('Escribe tu respuesta (un número entre 1 y 100): '))
-        
-        #Añadir el intento a la lista de tentativas
-        tentativas.append(player_choice)
-
-        # Verifica la adivinanza del jugador
-
-        if player_choice < random_number:
-            print('Demasiado bajo. ¡Inténtalo de nuevo!')
-        elif player_choice > random_number:
-            print('Demasiado alto. ¡Inténtalo de nuevo!')
-        else:
-            print('¡Felicidades! Has adivinado el número.')
-            
-            #Mensaje de fin del juego
-            print('\n --- Fin del juego ---')
-            print(f'¡Ganaste en {len(tentativas)} intentos!')
-
-            #Mostrar intentos (tentativas) realizadas
-            print('Tus intentos fueron:')
-            for intento in tentativas:
-                print(intento)
-            
-            break
-
-        # Turno de la computadora
-        print('\n--- Round: Computer ---')
-
-        #La computadora hace una elección basándose en la respuesta del jugador
-        if player_choice < random_number:
-            #La respuesta del jugador es bajo, la computadora adivina un número mayor
-            computer_choice = random.randint( player_choice + 1, 100)
-        elif player_choice > random_number:
-            #La respuesta del jugador es alto, la computadora adivina un número menor
-            computer_choice = random.randint(1, player_choice - 1)
-
-        computer_choice = random.randint(1, 100)
-        print(f'La computadora elige:', computer_choice)
-
-        # Verifica la adivinanza de la computadora
-        if computer_choice < random_number:
-            print('Demasiado bajo. ¡Inténtalo de nuevo!')
-        elif computer_choice > random_number:
-            print('Demasiado alto. ¡Inténtalo de nuevo!')
-        else:
-            print('¡La computadora ha adivinado el número!')
-            break
-    """
-
+    
 if __name__ == '__main__':
     start_game()
 
