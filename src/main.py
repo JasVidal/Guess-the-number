@@ -1,40 +1,67 @@
 import random
 
-# Función Bienvenida
+
+#---- Función: Bienvenida ----
 
 def welcome():
-#guardar en variable
-    print('¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!')
+    return print('¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!')
+    
+
+#---- Función: Jugador ingresa su nombre ----
+
+def set_player_name():    
+    name = input('¡Hola! ¿Cuál es tu nombre?')
+    return name
 
 
-# Genera un número aleatorio entre 1 y 100
+#---- Función: Generar número aleatorio ----
+
 def generate_number():
     random_number = random.randint(1, 100)
     return random_number
 
-# Bucle del juego
 
-def guess_number(human_name):
+#---- Función: Turno Jugador ingresa su respuesta ----
 
+def player_turn(player_name):
+    print(f'\n--- Round: {player_name} ---')
+    try:
+        return int(input('Escribe tu respuesta (un número entre 1 y 100): '))
+    except ValueError:
+        print('Por favor ingresa un número entero.')
+    return None # Devuelve error: cuando no se escribe un número válido
+        
+#---- Función: Turno Computadora ingresa su respuesta ----
+
+def computer_turn():
+    print('\n--- Round: Computer  ---')
+    computer_guess = generate_number()
+    print(f'La computadora elige:, {computer_guess}')
+    return computer_guess
+
+#---- Bucle del juego ----
+
+def guess_number(player_name):
+    #Se trae función Generar número aleatorio
     number_to_guess = generate_number()
-    print(number_to_guess)
+
     turn = "Player"
 
     while True:
-        #Obtiene número del jugador o cumputadora
+       
         if turn == "Player":
-            number = player_turn(human_name)
+            player_guess = player_turn(player_name)
 
         else:
-            number = computer_turn()
+            player_guess = computer_turn()
             
-        if number is None:
+        if player_guess is None:
             continue #Vuelve a intentar
         
-        new_message = validate_guess(number, number_to_guess)
+        new_message = validate_guess(player_guess, number_to_guess)
 
         print(new_message)
-        #Mensaje de fin del juego
+        # Mensaje de fin del juego
 
         if new_message == '¡Felicidades! Has adivinado el número.':
             print('\n --- Fin del juego ---')
@@ -47,21 +74,21 @@ def guess_number(human_name):
         else:
             turn = 'Player'
 
-#Función validate guess
-def validate_guess(number, number_to_guess):
+#---- Función Comparación ----
+
+def validate_guess(player_guess, number_to_guess):
     
-    if number < number_to_guess:
-        message = ('Demasiado bajo. ¡Inténtalo de nuevo!')
-    elif number > number_to_guess:
-        message = ('Demasiado alto. ¡Inténtalo de nuevo!')
+    if player_guess < number_to_guess:
+        result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
+    elif player_guess > number_to_guess:
+        result = ('Demasiado alto. ¡Inténtalo de nuevo!')
     else:
-        message = ('¡Felicidades! Has adivinado el número.')
+        result = ('¡Felicidades! Has adivinado el número.')
 
-    return message
-
+    return result
     
 
-# Genera una lista para intentos
+#---- Genera una lista para intentos ----
 
 def tries_list():
     try_list = []
@@ -77,43 +104,35 @@ def tries_list():
     for try_number in try_list:
         print(try_number)
 
-# Jugador ingresa su nombre
-def player_name():    
-    name = input('¡Hola! ¿Cuál es tu nombre?')
-    return name
 
-# Jugador ingresa su respuesta
-def player_turn(human_name):
-        
-    # Turno del jugador
-        print(f'\n--- Round: {human_name} ---')
-        try:
-            return int(input('Escribe tu respuesta (un número entre 1 y 100): '))
-        except ValueError:
-            print('Por favor ingresa un número entero.')
-        return None #Si no se escribe un número válido
-        
+#---- Empieza el juego ----
 
-# Computador ingresa su respuesta
-def computer_turn():
-    print('\n--- Round: Computer  ---')
-    computer_choice = generate_number()
-    print(f'La computadora elige:, {computer_choice}')
-    return computer_choice
-
-# Empieza el juego
 def start_game():
     welcome()
-    human_name = player_name()
+    #Turno del jugador
+    player_name = set_player_name()
 
+    #Turno del computadora
+    guess_number(player_name)
+    play_again()
+    
 
-    # Turno de computadora
-    guess_number(human_name, )
+#---- Función Volver a jugar ----
+
+def play_again():
+    restart_game = input ('\n ¿Deseas jugar otra vez? Responde: Sí/No')
+
+    if restart_game.lower() == 'sí' or restart_game.lower() == 'si':
+        print('¡Genial! ¡Volvamos a jugar!')
+        start_game()
+
+    else: 
+        print('Gracias por jugar. ¡Hasta la próxima!')
 
     #-------------------------------------------
 """ while True:
         # Turno del jugador
-        print(f'\n--- Round: {player_name}  ---')
+        print(f'\n--- Round: {set_player_name}  ---')
         player_choice = int(input('Escribe tu respuesta (un número entre 1 y 100): '))
         
         #Añadir el intento a la lista de tentativas
