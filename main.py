@@ -3,7 +3,9 @@ import random
 #---- Función: Bienvenida ----
 
 def welcome():
-    return print('¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!')
+    welcome = '¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!'
+    print(welcome)
+    return welcome
     
 
 #---- Función: Jugador ingresa su nombre ----
@@ -80,7 +82,7 @@ def guess_number(player_name):
 
 #---- Función Comparación ----
 
-def validate_guess(player_guess, number_to_guess):
+def validate_guess(player_guess, number_to_guess): #nomock
 
     if player_guess < number_to_guess:
         result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
@@ -116,7 +118,7 @@ def start_game():
 
     #Turno del computadora
     guess_number(player_name)
-    play_again()
+    return play_again()
     
 
 #---- Función Volver a jugar ----
@@ -126,7 +128,7 @@ def play_again():
 
     if restart_game.lower() == 'sí' or restart_game.lower() == 'si':
         print('¡Genial! ¡Volvamos a jugar!\n')
-        start_game()
+        return start_game()
 
     else: 
         print('Gracias por jugar. ¡Hasta la próxima!')
