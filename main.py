@@ -11,11 +11,12 @@ def welcome():
 #---- Función: Jugador ingresa su nombre ----
 
 def set_player_name():    
-    name = input('¡Hola! ¿Cuál es tu nombre?')
+    name = input('¡Hola! ¿Cuál es tu nombre? ')
 
     #Verificar que se ingrese el nombre y no se quede vacío
-    if not name:
-        return 'Error: Por favor ingresa tu nombre.'
+    if not name or not name.isalpha():
+        print('Tu nombre solo debe contener letras.')
+        return
 
     print(f'¡Buenísimo {name}! ¡Que comience el juego!')
     return name
@@ -32,7 +33,12 @@ def generate_number():
 def player_turn(player_name):
     print(f'\n--- Round: {player_name} ---')
     try:
-        return int(input('Escribe tu respuesta (un número entre 1 y 100): '))
+        player_choice = int(input('Escribe tu respuesta (un número entre 1 y 100): '))
+        if player_choice < 100 and player_choice > 1:
+            return player_choice
+        else:
+            print('Debes ingresar un número que sea entre 1 y 100.')
+            return None #Devuelve error: si no se escribe dentro del rango
     except ValueError:
         print('Por favor ingresa un número entero.')
     return None # Devuelve error: cuando no se escribe un número válido
@@ -67,7 +73,8 @@ def guess_number(player_name):
             # Agrega el intento a la lista
             computer_tries.append(player_guess)
             
-        if player_guess is None:
+        if player_guess is None or not (1 < player_guess > 100):
+            print('Error: Número inválido, por favor ingresa un número entre 1 y 100.')
             continue #Vuelve a intentar
         
         result = validate_guess(player_guess, number_to_guess)
@@ -89,8 +96,9 @@ def guess_number(player_name):
 
 def validate_guess(player_guess, number_to_guess): 
 
-    try:
-        player_guess = int(player_guess)
+        #Condición de error
+        if player_guess != int(player_guess):
+            return 'Error: El número a adivinar debe ser un número entero.'
 
         if player_guess < number_to_guess:
             result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
@@ -100,18 +108,13 @@ def validate_guess(player_guess, number_to_guess):
             result = ('¡Felicidades! Has adivinado el número.')
         return result
 
-    except ValueError:
-        return 'Error: El número a adivinar debe ser un número entero.'
-
     
 
 #---- Genera una lista para intentos ----
 
 def tries_list(winner, player_tries, computer_tries):
-    if winner == "Player":
 
-        if not player_tries:
-            return 'Error: No hay intentos registrados para el jugador.'
+    if winner == "Player":
 
         print(f'¡Ganaste en {len(player_tries)} intentos!')
         #Mostrar lista de intentos realizadas
@@ -120,9 +123,6 @@ def tries_list(winner, player_tries, computer_tries):
             print(try_number)
 
     else:
-
-        if not computer_tries:
-            return 'Error: No se registraron intentos para la computadora.'
 
         print(f'¡La computadora ganó en {len(computer_tries)} intentos!')
         print('Los intentos de la computadora fueron:')
@@ -133,10 +133,15 @@ def tries_list(winner, player_tries, computer_tries):
 
 def start_game():
     welcome()
+
     #Turno del jugador
-    player_name = set_player_name()
-    if not player_name: #Verificar si se ingresó un nombre
-        print('Error: Por favor debes ingresar tu nombre.')
+
+    #No se define un nombre al jugador
+    player_name = None
+    while not player_name:
+        player_name = set_player_name()
+        if not player_name: #Verificar si se ingresó un nombre
+            print('Error: Por favor debes ingresar tu nombre.')
 
     #Turno del computadora
     result = guess_number(player_name)
