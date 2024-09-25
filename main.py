@@ -3,15 +3,20 @@ import random
 #---- Función: Bienvenida ----
 
 def welcome():
-    welcome = '¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!'
-    print(welcome)
-    return welcome
+    welcome_message = '¡Bienvenido a Guess the Number! En este juego, eres tú Vs. la computadora. \n Ambos deben adivinar el número correcto. ¡Mucha suerte!'
+    print(welcome_message)
+    return welcome_message
     
 
 #---- Función: Jugador ingresa su nombre ----
 
 def set_player_name():    
     name = input('¡Hola! ¿Cuál es tu nombre?')
+
+    #Verificar que se ingrese el nombre y no se quede vacío
+    if not name:
+        return 'Error: Por favor ingresa tu nombre.'
+
     print(f'¡Buenísimo {name}! ¡Que comience el juego!')
     return name
 
@@ -82,21 +87,32 @@ def guess_number(player_name):
 
 #---- Función Comparación ----
 
-def validate_guess(player_guess, number_to_guess): #nomock
+def validate_guess(player_guess, number_to_guess): 
 
-    if player_guess < number_to_guess:
-        result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
-    elif player_guess > number_to_guess:
-        result = ('Demasiado alto. ¡Inténtalo de nuevo!')
-    else:
-        result = ('¡Felicidades! Has adivinado el número.')
-    return result
+    try:
+        player_guess = int(player_guess)
+
+        if player_guess < number_to_guess:
+            result = ('Demasiado bajo. ¡Inténtalo de nuevo!')
+        elif player_guess > number_to_guess:
+            result = ('Demasiado alto. ¡Inténtalo de nuevo!')
+        else:
+            result = ('¡Felicidades! Has adivinado el número.')
+        return result
+
+    except ValueError:
+        return 'Error: El número a adivinar debe ser un número entero.'
+
     
 
 #---- Genera una lista para intentos ----
 
 def tries_list(winner, player_tries, computer_tries):
     if winner == "Player":
+
+        if not player_tries:
+            return 'Error: No hay intentos registrados para el jugador.'
+
         print(f'¡Ganaste en {len(player_tries)} intentos!')
         #Mostrar lista de intentos realizadas
         print('Tus intentos fueron:')
@@ -104,6 +120,10 @@ def tries_list(winner, player_tries, computer_tries):
             print(try_number)
 
     else:
+
+        if not computer_tries:
+            return 'Error: No se registraron intentos para la computadora.'
+
         print(f'¡La computadora ganó en {len(computer_tries)} intentos!')
         print('Los intentos de la computadora fueron:')
         for try_number in computer_tries:
@@ -115,23 +135,31 @@ def start_game():
     welcome()
     #Turno del jugador
     player_name = set_player_name()
+    if not player_name: #Verificar si se ingresó un nombre
+        print('Error: Por favor debes ingresar tu nombre.')
 
     #Turno del computadora
-    guess_number(player_name)
+    result = guess_number(player_name)
+    if result is None: #Verificar que el guess del jugador NO SEA None
+        print('Error: El jugador debe ingresar una respuesta.')
+
     return play_again()
     
 
 #---- Función Volver a jugar ----
 
 def play_again():
+    
     restart_game = input ('\n ¿Deseas jugar otra vez? Responde: Sí/No - ')
 
-    if restart_game.lower() == 'sí' or restart_game.lower() == 'si':
+    if restart_game.lower() in ['sí', 'si']:
         print('¡Genial! ¡Volvamos a jugar!\n')
         return start_game()
 
-    else: 
+    elif restart_game.lower() == 'no':
         print('Gracias por jugar. ¡Hasta la próxima!')
+    else:
+        print('Error: Tu respuesta es inválida, gracias por jugar. ¡Vuelve pronto!')
 
     
 if __name__ == '__main__':
