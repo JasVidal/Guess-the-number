@@ -164,7 +164,7 @@ def start_game():
 
 #---- Función Volver a jugar ----
 
-def play_again(): #volver T o F , preguntar a partir de la segunda vez
+def play_again(): 
     
     restart_game = input ('\n ¿Deseas jugar otra vez? Responde: Sí/No - ')
 
